@@ -62,7 +62,8 @@ export default class TvShows {
   }
 
   countShows(shows) {
-    return shows.length;
+    this.length = shows.length;
+    return this.length;
   }
 
   async likeShow(showId) {
