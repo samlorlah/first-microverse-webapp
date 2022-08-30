@@ -12,12 +12,12 @@ header {
   justify-content: space-between;
   align-items: center;
   padding: 30px 50px;
-  background-color: rgba(0, 0, 0, 0.285)
+  background-color: rgba(0, 0, 0, 0.285);
 }
 
 header #logo h2 {
   font-size: 45px;
-  color: #0000ff;
+  color: #00f;
 }
 
 header #logo h2 span {
@@ -39,14 +39,14 @@ header nav ul li {
 
 header nav ul li:hover {
   text-decoration: underline;
-  color: #0000ff;
+  color: #00f;
 }
 
 .footer {
- background-color: rgb(51, 46, 46);
- padding: 20px 30px;
- position: absolute;
- bottom: 0;
- width: 100%;
- color: #fff;
+  background-color: rgb(51, 46, 46);
+  padding: 20px 30px;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  color: #fff;
 }
