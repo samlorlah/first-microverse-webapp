@@ -49,7 +49,7 @@ export default class TvShows {
     const shows = await getShows();
     const likes = await getLikes();
     const showCount = document.querySelector('#show_count');
-    showCount.innerHTML = shows.length;
+    showCount.innerHTML = this.countShows(shows);
     shows.forEach((show) => {
       const like = likes.filter((like) => {
         if (parseInt(like.item_id, 10) === parseInt(show.id, 10)) {
@@ -59,6 +59,10 @@ export default class TvShows {
       });
       this.displayCard(show, like);
     });
+  }
+
+  countShows(shows) {
+    return shows.length;
   }
 
   async likeShow(showId) {
