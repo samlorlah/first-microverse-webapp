@@ -20,13 +20,13 @@ export default class TvShows {
       </div>
       </div>
       <div class="card-btns">
-      <button data-id="${show.id}" class="comment-btn" type="button">Comments</button>
+      <button data-id="${show.id}" id= "btnId-${show.id}" class="comment-btn" type="button">Comments</button>
       </div>
       </div>`);
-
+    const commentContainer = document.querySelector('.container');
     const cardContainer = document.querySelector('.main-container');
     cardContainer.append(card);
-
+   
     const likeBtnEvent = document.querySelector(`#like_btn_${show.id}`);
     const likeCountDisplayed = document.querySelector(`#likeCount_displayed_${show.id}`);
     likeBtnEvent.addEventListener('click', async () => {
@@ -43,6 +43,19 @@ export default class TvShows {
       }
       child[1].classList.remove('liked');
     });
+
+    const commentBtn = document.querySelector(`#btnId-${show.id}`);
+    const commentWrapper = document.querySelector('.comment-section-container.dn');
+    commentBtn.addEventListener('click', ()=>{
+      commentWrapper.classList.toggle('dn')
+
+
+      const close = document.querySelector('.fa.fa-times');
+      close.addEventListener('click', (e) => {
+        e.preventDefault()
+        commentWrapper.classList.add('dn')
+      })
+    })
   }
 
   async getShows() {
