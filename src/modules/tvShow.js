@@ -1,4 +1,4 @@
-import { getShows, getLikes, likeShowOps } from './apiOperations.js';
+import { getShows, getLikes, likeShowOps,createComment,getComments } from './apiOperations.js';
 
 export default class TvShows {
   displayCard(show, like) {
@@ -82,4 +82,48 @@ export default class TvShows {
   async likeShow(showId) {
     this.res = await likeShowOps(showId);
   }
+
+  async commentShow(id){
+    this.res = await getComments(id);
+
+  }
+   
+  renderPopUp(show,comments){
+    const commentCont = document.getElementById('commentCont');
+    const html = `<div class="comment-section-container dn">
+    <i class="fa fa-times" aria-hidden="true"></i>
+  <div class="image-container" id="">
+    <img  src="${show.image.medium}">
+  </div>
+  <div class="info-container">
+    <p class="name">${show.name}</p>
+    <p class="desc">${show.summary}</p>
+  </div>
+  <div class="display-comment">
+  <h2>Comments (${comments.length})</h2>
+  <ul>
+  ${comments.forEach(comment => {
+    `<li><span class="comment-username"> ${comment.username}:</span> ${comment.comment}</li>`
+  })}
+    
+ </ul> 
+</div>
+  <form action="post" class="form">
+    <h2>Add Comment</h2>
+    <input type="text" class="name-input" placeholder="Your Name" required>
+    <textarea name="insight" id="insignt" class="insignt" cols="30" placeholder="Your Insight" rows="8"></textarea>
+     <input type="submit" class="submit" value="Submit" id="${show.id}">
+  </form>
+  </div>`;
+
+    const commentWrapper = document.querySelector('.comment-section-container.dn');
+    commentWrapper.classList.toggle('dn')
+      const close = document.querySelector('.fa.fa-times');
+      close.addEventListener('click', (e) => {
+        e.preventDefault()
+        commentWrapper.classList.add('dn')
+      })
+  }
+
+
 }

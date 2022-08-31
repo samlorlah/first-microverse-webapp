@@ -166,3 +166,10 @@ header nav ul li:hover {
   align-items: center;
   width: 50%;
 }
+
+.comment-username {
+  font-weight: 900;
+}
+ul li {
+  list-style-type: none;
+}
