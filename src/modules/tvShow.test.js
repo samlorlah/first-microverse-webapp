@@ -16,3 +16,17 @@ test('Count the array of data and render the number', () => {
   const length = show.countShows(arr);
   expect(length).toBe(8);
 });
+
+test('Count the array of comments and render the number', () => {
+  const comment = new TvShows();
+  const arr = [
+    { comment: 1, creation_date: '2021-01-10', username: 'gordon' },
+    { comment: 1, creation_date: '2021-01-09', username: 'Kevo' },
+    { comment: 1, creation_date: '2021-01-10', username: 'Mike' },
+    { comment: 1, creation_date: '2021-01-11', username: 'Ous' },
+    { comment: 1, creation_date: '2021-01-10', username: 'lee' },
+  ];
+
+  const length = comment.countComments(arr);
+  expect(length).toBe(5);
+});

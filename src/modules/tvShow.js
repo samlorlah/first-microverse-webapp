@@ -1,4 +1,6 @@
-import { getShows, getLikes, likeShowOps,createComment,getComments } from './apiOperations.js';
+import {
+  getShows, getLikes, likeShowOps, createComment, getComments,
+} from './apiOperations.js';
 
 export default class TvShows {
   displayCard(show, like) {
@@ -25,7 +27,7 @@ export default class TvShows {
       </div>`);
     const cardContainer = document.querySelector('.main-container');
     cardContainer.append(card);
-   
+
     const likeBtnEvent = document.querySelector(`#like_btn_${show.id}`);
     const likeCountDisplayed = document.querySelector(`#likeCount_displayed_${show.id}`);
     likeBtnEvent.addEventListener('click', async () => {
@@ -44,17 +46,11 @@ export default class TvShows {
     });
 
     const commentBtn = document.querySelector(`#btnId-${show.id}`);
-    const commentWrapper = document.querySelector('.comment-section-container.dn');
-    commentBtn.addEventListener('click', ()=>{
-      commentWrapper.classList.toggle('dn')
-
-
-      const close = document.querySelector('.fa.fa-times');
-      close.addEventListener('click', (e) => {
-        e.preventDefault()
-        commentWrapper.classList.add('dn')
-      })
-    })
+    const commentWrapper = document.querySelector('#commentCont');
+    commentBtn.addEventListener('click', () => {
+      commentWrapper.innerHTML = '';
+      this.renderPopUp(show);
+    });
   }
 
   async getShows() {
@@ -78,56 +74,71 @@ export default class TvShows {
     return this.length;
   }
 
+  countComments(comments) {
+    this.length = comments.length;
+    return this.length;
+  }
+
   async likeShow(showId) {
     this.res = await likeShowOps(showId);
   }
 
-  async commentShow(id){
+  async commentShow(id) {
     this.res = await getComments(id);
-
   }
 
-  async createComment (id,name, comment){
-    const form =document.querySelector('.commentForm')
-    this.res = await createComment(id,name, comment);
-  }
-   
-  renderPopUp(show,comments){
-    const html = `<div class="comment-section-container dn">
-    <i class="fa fa-times" aria-hidden="true"></i>
-  <div class="image-container" id="">
-    <img  src="${show.image.medium}">
-  </div>
-  <div class="info-container">
-    <p class="name">${show.name}</p>
-    <p class="desc">${show.summary}</p>
-  </div>
-  <div class="display-comment">
-  <h2>Comments (${comments.length})</h2>
-  <ul>
-  ${comments.forEach(comment => {
-    `<li>${comment.creation_date}<span class="comment-username"> ${comment.username}:</span> ${comment.comment}</li>`
-  })}
-    
- </ul> 
-</div>
-  <form action="#" class="form">
-    <h2>Add Comment</h2>
-    <input type="text" class="name-input" placeholder="Your Name" required>
-    <textarea name="insight" id="insignt" class="insignt" cols="30" placeholder="Your Insight" rows="8"></textarea>
-     <input type="submit" class="submit" value="Submit" id="${show.id}">
-  </form>
-  </div>`;
-  const commentCont = document.getElementById('commentCont');
-  commentCont.append(html);
-
-    const commentWrapper = document.querySelector('.comment-section-container.dn');
-    commentWrapper.classList.toggle('dn')
-      const close = document.querySelector('.fa.fa-times');
-      close.addEventListener('click', (e) => {
-        e.preventDefault()
-        commentWrapper.classList.add('dn')
-      })
+  async createComment(id, name, comment) {
+    document.querySelector('.name-input').value = '';
+    document.querySelector('.insignt').value = '';
+    this.res = await createComment(id, name, comment);
   }
 
+  async renderPopUp(show) {
+    const comments = await getComments(show.id);
+    let html = `
+    <div class="comment-section-container">
+      <i class="fa fa-times" aria-hidden="true"></i>
+      <div class="image-container" id="">
+        <img  src="${show.image.medium}">
+      </div>
+      <div class="info-container">
+        <h3 class="showName">${show.name.toUpperCase()}</h3>
+        <p class="desc">${show.summary}</p>
+      </div>
+      <div class="display-comment">
+        <h3>Comments (${comments.length ? comments.length : 0})</h3>
+        <ul class= "listItems" >`;
+    if (Array.isArray(comments) && comments.length > 0) {
+      comments.forEach((comment) => {
+        html += `<li>${comment.creation_date} <span class="comment-username">${comment.username}:</span> ${comment.comment}</li>`;
+      });
+    }
+    html += `</ul> 
+      </div>
+      <form action="#" class="commentForm">
+        <h3>Add Comment</h3>
+        <div><input type="text" class="name-input" placeholder="Your Name" required></div>
+        <div><textarea name="insight" id="insignt" class="insignt" cols="30" placeholder="Your Insight" rows="8"></textarea></div>
+        <input type="submit" class="submitBtn" value="Submit" id="${show.id}">
+      </form>
+    </div>`;
+    const commentCont = document.getElementById('commentCont');
+    commentCont.innerHTML += html;
+
+    const form = document.querySelector('.commentForm');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const itemId = document.querySelector('.submitBtn').getAttribute('id');
+      const username = document.querySelector('.name-input').value;
+      const comment = document.querySelector('.insignt').value;
+      this.createComment(itemId, username, comment);
+    });
+    const commentWrapper = document.querySelector('.comment-section-container');
+    commentCont.classList.remove('dn');
+    const close = document.querySelector('.fa.fa-times');
+    close.addEventListener('click', (e) => {
+      e.preventDefault();
+      commentWrapper.classList.add('dn');
+    });
+  }
 }
