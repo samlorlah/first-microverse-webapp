@@ -106,7 +106,7 @@ export default class TvShows {
         <p class="desc">${show.summary}</p>
       </div>
       <div class="display-comment">
-        <h3>Comments (${comments.length ? comments.length : 0})</h3>
+        <h3>Comments (<span id= "comments-count">${comments.length ? comments.length : 0}</span>)</h3>
         <ul class= "listItems" >`;
     if (Array.isArray(comments) && comments.length > 0) {
       comments.forEach((comment) => {
@@ -131,7 +131,18 @@ export default class TvShows {
       const itemId = document.querySelector('.submitBtn').getAttribute('id');
       const username = document.querySelector('.name-input').value;
       const comment = document.querySelector('.insignt').value;
-      this.createComment(itemId, username, comment);
+      await this.createComment(itemId, username, comment);
+      const comments = await getComments(show.id);
+      const commentsCount = document.querySelector('#comments-count');
+      commentsCount.innerHTML = '';
+      commentsCount.innerHTML = comments.length;
+      const listItems = document.querySelector('.listItems');
+      listItems.innerHTML = '';
+      let lists = '';
+      comments.forEach((comment) => {
+        lists += `<li>${comment.creation_date} <span class="comment-username">${comment.username}:</span> ${comment.comment}</li>`;
+      });
+      listItems.innerHTML = lists;
     });
     const commentWrapper = document.querySelector('.comment-section-container');
     commentCont.classList.remove('dn');
