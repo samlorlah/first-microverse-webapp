@@ -1,4 +1,6 @@
-import { getShows, getLikes, likeShowOps } from './apiOperations.js';
+import {
+  getShows, getLikes, likeShowOps, createComment, getComments,
+} from './apiOperations.js';
 
 export default class TvShows {
   displayCard(show, like) {
@@ -20,10 +22,9 @@ export default class TvShows {
       </div>
       </div>
       <div class="card-btns">
-      <button data-id="${show.id}" class="comment-btn" type="button">Comments</button>
+      <button data-id="${show.id}" id= "btnId-${show.id}" class="comment-btn" type="button">Comments</button>
       </div>
       </div>`);
-
     const cardContainer = document.querySelector('.main-container');
     cardContainer.append(card);
 
@@ -42,6 +43,13 @@ export default class TvShows {
         likeCountDisplayed.innerHTML = `${newLike} Like`;
       }
       child[1].classList.remove('liked');
+    });
+
+    const commentBtn = document.querySelector(`#btnId-${show.id}`);
+    const commentWrapper = document.querySelector('#commentCont');
+    commentBtn.addEventListener('click', () => {
+      commentWrapper.innerHTML = '';
+      this.renderPopUp(show);
     });
   }
 
@@ -66,7 +74,82 @@ export default class TvShows {
     return this.length;
   }
 
+  countComments(comments) {
+    this.length = comments.length;
+    return this.length;
+  }
+
   async likeShow(showId) {
     this.res = await likeShowOps(showId);
+  }
+
+  async commentShow(id) {
+    this.res = await getComments(id);
+  }
+
+  async createComment(id, name, comment) {
+    document.querySelector('.name-input').value = '';
+    document.querySelector('.insignt').value = '';
+    this.res = await createComment(id, name, comment);
+  }
+
+  async renderPopUp(show) {
+    const comments = await getComments(show.id);
+    let html = `
+    <div class="comment-section-container">
+      <i class="fa fa-times" aria-hidden="true"></i>
+      <div class="image-container" id="">
+        <img  src="${show.image.medium}">
+      </div>
+      <div class="info-container">
+        <h3 class="showName">${show.name.toUpperCase()}</h3>
+        <p class="desc">${show.summary}</p>
+      </div>
+      <div class="display-comment">
+        <h3>Comments (<span id= "comments-count">${comments.length ? comments.length : 0}</span>)</h3>
+        <ul class= "listItems" >`;
+    if (Array.isArray(comments) && comments.length > 0) {
+      comments.forEach((comment) => {
+        html += `<li>${comment.creation_date} <span class="comment-username">${comment.username}:</span> ${comment.comment}</li>`;
+      });
+    }
+    html += `</ul> 
+      </div>
+      <form action="#" class="commentForm">
+        <h3>Add Comment</h3>
+        <div><input type="text" class="name-input" placeholder="Your Name" required></div>
+        <div><textarea name="insight" id="insignt" class="insignt" cols="30" placeholder="Your Insight" rows="8"></textarea></div>
+        <input type="submit" class="submitBtn" value="Submit" id="${show.id}">
+      </form>
+    </div>`;
+    const commentCont = document.getElementById('commentCont');
+    commentCont.innerHTML += html;
+
+    const form = document.querySelector('.commentForm');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const itemId = document.querySelector('.submitBtn').getAttribute('id');
+      const username = document.querySelector('.name-input').value;
+      const comment = document.querySelector('.insignt').value;
+      await this.createComment(itemId, username, comment);
+      const comments = await getComments(show.id);
+      const commentsCount = document.querySelector('#comments-count');
+      commentsCount.innerHTML = '';
+      commentsCount.innerHTML = comments.length;
+      const listItems = document.querySelector('.listItems');
+      listItems.innerHTML = '';
+      let lists = '';
+      comments.forEach((comment) => {
+        lists += `<li>${comment.creation_date} <span class="comment-username">${comment.username}:</span> ${comment.comment}</li>`;
+      });
+      listItems.innerHTML = lists;
+    });
+    const commentWrapper = document.querySelector('.comment-section-container');
+    commentCont.classList.remove('dn');
+    const close = document.querySelector('.fa.fa-times');
+    close.addEventListener('click', (e) => {
+      e.preventDefault();
+      commentWrapper.classList.add('dn');
+    });
   }
 }
