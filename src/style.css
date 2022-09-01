@@ -132,7 +132,7 @@ header nav ul li:hover {
   right: 50px;
   top: 20px;
 }
-.form {
+.commentForm {
   display: flex;
   flex-direction: column;
   margin-top: 10px;

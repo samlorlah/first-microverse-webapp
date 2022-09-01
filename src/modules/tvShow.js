@@ -23,7 +23,6 @@ export default class TvShows {
       <button data-id="${show.id}" id= "btnId-${show.id}" class="comment-btn" type="button">Comments</button>
       </div>
       </div>`);
-    const commentContainer = document.querySelector('.container');
     const cardContainer = document.querySelector('.main-container');
     cardContainer.append(card);
    
@@ -87,9 +86,13 @@ export default class TvShows {
     this.res = await getComments(id);
 
   }
+
+  async createComment (id,name, comment){
+    const form =document.querySelector('.commentForm')
+    this.res = await createComment(id,name, comment);
+  }
    
   renderPopUp(show,comments){
-    const commentCont = document.getElementById('commentCont');
     const html = `<div class="comment-section-container dn">
     <i class="fa fa-times" aria-hidden="true"></i>
   <div class="image-container" id="">
@@ -103,18 +106,20 @@ export default class TvShows {
   <h2>Comments (${comments.length})</h2>
   <ul>
   ${comments.forEach(comment => {
-    `<li><span class="comment-username"> ${comment.username}:</span> ${comment.comment}</li>`
+    `<li>${comment.creation_date}<span class="comment-username"> ${comment.username}:</span> ${comment.comment}</li>`
   })}
     
  </ul> 
 </div>
-  <form action="post" class="form">
+  <form action="#" class="form">
     <h2>Add Comment</h2>
     <input type="text" class="name-input" placeholder="Your Name" required>
     <textarea name="insight" id="insignt" class="insignt" cols="30" placeholder="Your Insight" rows="8"></textarea>
      <input type="submit" class="submit" value="Submit" id="${show.id}">
   </form>
   </div>`;
+  const commentCont = document.getElementById('commentCont');
+  commentCont.append(html);
 
     const commentWrapper = document.querySelector('.comment-section-container.dn');
     commentWrapper.classList.toggle('dn')
@@ -124,6 +129,5 @@ export default class TvShows {
         commentWrapper.classList.add('dn')
       })
   }
-
 
 }
