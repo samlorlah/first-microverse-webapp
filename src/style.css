@@ -20,16 +20,16 @@ header {
   margin-left: 5rem;
 }
 
+ul li {
+  list-style-type: none;
+  padding: 0;
+}
+
 header nav ul li {
   font-size: 20px;
   font-weight: 700;
   cursor: pointer;
   color: #fff;
-}
-
-ul li {
-  list-style-type: none;
-  padding: 0;
 }
 
 .nav-items li {
