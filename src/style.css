@@ -9,13 +9,20 @@ header {
   position: fixed;
   width: 100%;
   display: flex;
-  justify-content: space-between;
   align-items: center;
   padding: 30px 50px;
   background-color: rgba(0, 0, 0, 0.285);
   max-height: 100px;
 }
 
+.nav-items {
+  display: flex;
+  margin-left: 5rem;
+}
+
+.nav-items li {
+  padding: 10px;
+}
 header #logo h2 {
   font-size: 45px;
   color: #00f;
