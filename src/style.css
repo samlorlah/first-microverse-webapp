@@ -20,6 +20,18 @@ header {
   margin-left: 5rem;
 }
 
+header nav ul li {
+  font-size: 20px;
+  font-weight: 700;
+  cursor: pointer;
+  color: #fff;
+}
+
+ul li {
+  list-style-type: none;
+  padding: 0;
+}
+
 .nav-items li {
   padding: 10px;
 }
@@ -27,11 +39,6 @@ header {
 header #logo h2 {
   font-size: 45px;
   color: #00f;
-}
-
-ul li {
-  list-style-type: none;
-  padding: 0;
 }
 
 header #logo h2 span {
@@ -42,13 +49,6 @@ header #logo h2 span {
 
 header nav ul {
   list-style: none;
-}
-
-header nav ul li {
-  font-size: 20px;
-  font-weight: 700;
-  cursor: pointer;
-  color: #fff;
 }
 
 header nav ul li:hover {
