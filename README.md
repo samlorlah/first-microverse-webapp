@@ -16,7 +16,7 @@ TVmaze is a web application that generates random movies from the tv Maze API. M
 
 ## Live Demo
 Live site URL to Webpack basic setup
-[Live Demo Link](https://samlorlah.github.io/first-microverse-webapp/dist)
+[Live Demo Link](https://samlorlah.github.io/first-microverse-webapp/)
 
 
 ### Prerequisites

@@ -9,21 +9,36 @@ header {
   position: fixed;
   width: 100%;
   display: flex;
-  justify-content: space-between;
   align-items: center;
   padding: 30px 50px;
   background-color: rgba(0, 0, 0, 0.285);
   max-height: 100px;
 }
 
-header #logo h2 {
-  font-size: 45px;
-  color: #00f;
+.nav-items {
+  display: flex;
+  margin-left: 5rem;
 }
 
 ul li {
   list-style-type: none;
   padding: 0;
+}
+
+header nav ul li {
+  font-size: 20px;
+  font-weight: 700;
+  cursor: pointer;
+  color: #fff;
+}
+
+.nav-items li {
+  padding: 10px;
+}
+
+header #logo h2 {
+  font-size: 45px;
+  color: #00f;
 }
 
 header #logo h2 span {
@@ -34,13 +49,6 @@ header #logo h2 span {
 
 header nav ul {
   list-style: none;
-}
-
-header nav ul li {
-  font-size: 20px;
-  font-weight: 700;
-  cursor: pointer;
-  color: #fff;
 }
 
 header nav ul li:hover {
