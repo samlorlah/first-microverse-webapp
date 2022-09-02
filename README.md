@@ -16,7 +16,7 @@ TVmaze is a web application that generates random movies from the tv Maze API. M
 
 ## Live Demo
 Live site URL to Webpack basic setup
-[Live Demo Link](https://mystifying-haibt-69e737.netlify.app/)
+[Live Demo Link]()
 
 ### Prerequisites
 
